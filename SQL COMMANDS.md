@@ -319,3 +319,102 @@ mysql> select * from student_data where country!='India' or course='Science';
 +------+--------+---------+---------+-----------+
 5 rows in set (0.00 sec)
 
+mysql> select isnull(m_name) from parents_data;
++----------------+
+| isnull(m_name) |
++----------------+
+|              0 |
+|              0 |
+|              0 |
+|              0 |
+|              0 |
+|              1 |
++----------------+
+6 rows in set (0.00 sec)
+
+mysql> select coalesce(m_name,'x') from parents_data;
++----------------------+
+| coalesce(m_name,'x') |
++----------------------+
+| Sandy                |
+| Katie                |
+| Harpreet             |
+| Rosy                 |
+| Alice                |
+| x                    |
++----------------------+
+6 rows in set (0.00 sec)
+
+mysql> select coalesce(m_name,'x') as m_name from parents_data;
++----------+
+| m_name   |
++----------+
+| Sandy    |
+| Katie    |
+| Harpreet |
+| Rosy     |
+| Alice    |
+| x        |
++----------+
+6 rows in set (0.00 sec)
+
+mysql> update parents_data set m_name=coalesce(m_name,'-');
+Query OK, 1 row affected (0.06 sec)
+Rows matched: 6  Changed: 1  Warnings: 0
+
+mysql> select * from parents_data;
++------+----------+---------+--------+---------+
+| id   | m_name   | m_phone | f_name | f_phone |
++------+----------+---------+--------+---------+
+|    1 | Sandy    |   78907 | Peter  |   54678 |
+|    2 | Katie    |   78667 | Sam    |   50878 |
+|    3 | Harpreet |   66607 | Ramu   |   99678 |
+|    4 | Rosy     |   70607 | Rajma  |   93568 |
+|    5 | Alice    |   99999 | Shyamu |   99989 |
+|    6 | -        |    NULL | NULL   |    NULL |
++------+----------+---------+--------+---------+
+6 rows in set (0.00 sec)
+
+mysql> update parents_data set f_name=coalesce(f_name,'-');
+Query OK, 1 row affected (0.05 sec)
+Rows matched: 6  Changed: 1  Warnings: 0
+
+mysql> select * from parents_data;
++------+----------+---------+--------+---------+
+| id   | m_name   | m_phone | f_name | f_phone |
++------+----------+---------+--------+---------+
+|    1 | Sandy    |   78907 | Peter  |   54678 |
+|    2 | Katie    |   78667 | Sam    |   50878 |
+|    3 | Harpreet |   66607 | Ramu   |   99678 |
+|    4 | Rosy     |   70607 | Rajma  |   93568 |
+|    5 | Alice    |   99999 | Shyamu |   99989 |
+|    6 | -        |    NULL | -      |    NULL |
++------+----------+---------+--------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select s.id,s.s_name,s.s_phone,p.m_name,p.m_phone,p.f_name,p.f_phone,s.course,s.country from student_data s join parents_data p on s.id=p.id;
++------+--------+---------+----------+---------+-----------+---------+----------+-----------+
+| id   | s_name | s_phone | m_name   | m_phone | f_name    | f_phone | course   | country   |
++------+--------+---------+----------+---------+-----------+---------+----------+-----------+
+|    1 | Harry  |   98101 | Sandy    |   78907 | Peter     |   54678 | Commerce | India     |
+|    2 | Matt   |   78101 | Katie    |   78667 | Sam       |   50878 | Science  | Australia |
+|    3 | Karan  |   76201 | Harpreet |   66607 | Ramu      |   99678 | Science  | India     |
+|    4 | Param  |   76307 | Rosy     |   70607 | Rajma     |   93568 | Science  | India     |
+|    5 | Rahul  |   77807 | Alice    |   99999 | Shyamu    |   99989 | Arts     | Australia |
+|    6 | Kamal  |   78101 | Pushpa   |   88888 | Karanjeet |   82888 | Arts     | US        |
++------+--------+---------+----------+---------+-----------+---------+----------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> select s.id,s.s_name,m.marks,s.s_phone,p.m_name,p.m_phone,p.f_name,p.f_phone,s.course,s.country from student_data s join parents_data p on s.id=p.id join marks_data m on s.id=m.id;
++------+--------+-------+---------+----------+---------+-----------+---------+----------+-----------+
+| id   | s_name | marks | s_phone | m_name   | m_phone | f_name    | f_phone | course   | country   |
++------+--------+-------+---------+----------+---------+-----------+---------+----------+-----------+
+|    1 | Harry  |    90 |   98101 | Sandy    |   78907 | Peter     |   54678 | Commerce | India     |
+|    2 | Matt   |    78 |   78101 | Katie    |   78667 | Sam       |   50878 | Science  | Australia |
+|    3 | Karan  |    57 |   76201 | Harpreet |   66607 | Ramu      |   99678 | Science  | India     |
+|    4 | Param  |    89 |   76307 | Rosy     |   70607 | Rajma     |   93568 | Science  | India     |
+|    5 | Rahul  |    97 |   77807 | Alice    |   99999 | Shyamu    |   99989 | Arts     | Australia |
+|    6 | Kamal  |    44 |   78101 | Pushpa   |   88888 | Karanjeet |   82888 | Arts     | US        |
++------+--------+-------+---------+----------+---------+-----------+---------+----------+-----------+
+6 rows in set (0.00 sec)
+
