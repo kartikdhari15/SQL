@@ -10,6 +10,7 @@ select * from student_data;
 
 mysql> use student;
 Database changed
+
 mysql> show tables;
 +-------------------+
 | Tables_in_student |
